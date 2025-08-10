@@ -7,10 +7,12 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+  /* Background & body */
   body {
-    margin: 0; padding: 20px;
-    background-color: #000;
-    color: #00ff00;
+    margin: 0; 
+    padding: 20px;
+    background-color: #000; /* black background */
+    color: #00ff00; /* green text */
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
@@ -18,12 +20,15 @@
     justify-content: flex-start;
     height: 100vh;
     overflow: hidden;
+    position: relative;
+    z-index: 1; /* To keep body content above canvas */
   }
 
+  /* Header */
   header {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ff0000;
+    color: #ff0000; /* red color */
     margin-bottom: 5px;
     text-shadow:
       0 0 5px #ff0000,
@@ -33,16 +38,24 @@
       0 0 80px #00ff00;
     letter-spacing: 3px;
     user-select: none;
+    z-index: 10;
+    position: relative;
   }
 
+  /* Subheader */
   .subheader {
     font-size: 1rem;
     color: #00ff00;
     margin-bottom: 20px;
     text-shadow: 0 0 10px #00ff00;
+    z-index: 10;
+    position: relative;
   }
 
+  /* Terminal-like container */
   .terminal {
+    position: relative; /* very important for z-index */
+    z-index: 10; /* make sure this is above the canvas */
     background: #111;
     border: 2px solid #00ff00;
     border-radius: 10px;
@@ -56,44 +69,33 @@
     color: #00ff00;
     overflow-y: auto;
     white-space: pre-wrap;
-    position: relative;
     display: flex;
     flex-direction: column;
   }
 
-  label {
-    margin-top: 10px;
-    margin-bottom: 5px;
-  }
-
-  select, input[type="text"] {
+  /* Input & selects styling inside terminal */
+  input, select, button {
     width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #00ff00;
-    background-color: #000;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid #00ff00;
+    background-color: black;
     color: #00ff00;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
+    font-size: 15px;
   }
-
   button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #00ff00;
-    color: #000;
     font-weight: bold;
-    border: none;
-    border-radius: 10px;
     cursor: pointer;
-    font-family: 'Share Tech Mono', monospace;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
   }
-
   button:hover {
-    background-color: #00cc00;
+    background-color: #00ff00;
+    color: black;
   }
 
+  /* Blinking cursor */
   .cursor {
     display: inline-block;
     background-color: #00ff00;
@@ -103,114 +105,118 @@
     animation: blink 1s step-start infinite;
     vertical-align: bottom;
   }
-
   @keyframes blink {
     50% { background-color: transparent; }
   }
 
+  /* Matrix rain canvas */
   #matrix {
     position: fixed;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    z-index: 0;
+    z-index: 0; /* background */
   }
+
 </style>
 </head>
-<body>
+<body onload="initMatrix()">
+
 <header>MASTER HACKER TOOL</header>
 <div class="subheader">WhatsApp Unban Full Working Trick ♥️🖤💚 100% Unban Guarantee</div>
 
 <div class="terminal" id="terminal">
-  <form id="unbanForm" onsubmit="sendUnbanMail(event)">
-    <label for="number">Enter WhatsApp Number:</label>
-    <input type="text" id="number" name="number" placeholder="e.g. +923001234567" required pattern="^\+\d{10,15}$" title="Number must start with + and country code, then number" />
 
-    <label for="banType">Select Ban Type:</label>
-    <select id="banType" name="banType" required>
-      <option value="">--Select Ban Type--</option>
-      <option value="Permanent Ban">Permanent Ban</option>
-      <option value="Normal Ban">Normal Ban</option>
-    </select>
+  <label for="banType">SELECT UNBAN OPTION</label>
+  <select id="banType">
+    <option value="normal">NORMAL UNBANNED</option>
+    <option value="permanent">PERMANENTLY UNBANNED</option>
+  </select>
 
-    <label for="promote">Select Promote Message:</label>
-    <select id="promote" name="promote" required>
-      <option value="">--Select Promote Message--</option>
-      <option value="Final Chance to Unban">Final Chance to Unban</option>
-      <option value="Please Unban My Number">Please Unban My Number</option>
-      <option value="Requesting Unban for Mistake">Requesting Unban for Mistake</option>
-      <option value="Urgent Request for Unban">Urgent Request for Unban</option>
-      <option value="Hope You Consider My Request">Hope You Consider My Request</option>
-      <option value="Kindly Review My Case">Kindly Review My Case</option>
-    </select>
+  <label for="phoneNumber">ENTER PHONE NUMBER</label>
+  <input type="text" id="phoneNumber" placeholder="e.g. +923xxxxxxxxx" />
 
-    <button type="submit">Send Unban Request</button>
-  </form>
+  <label for="promoteSelect">SELECT PROMOTION LINE</label>
+  <select id="promoteSelect">
+    <option value="chance">Chance</option>
+    <option value="finalChance">Final Chance</option>
+    <option value="pleaseUnban">Please Unban Me</option>
+    <option value="mistakeBan">Mistake Ban</option>
+    <option value="urgentRequest">Urgent Request</option>
+    <option value="respectRequest">Respect Request</option>
+  </select>
+
+  <button onclick="sendUnbanRequest()">SEND UNBAN REQUEST</button>
+
+  <div id="result" style="margin-top:20px; white-space: pre-wrap;"></div>
 </div>
 
 <canvas id="matrix"></canvas>
 
 <script>
-  // Matrix rain effect (optional, you can remove if not needed)
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  // MATRIX RAIN EFFECT
 
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%';
-  const fontSize = 14;
-  const columns = Math.floor(width / fontSize);
-  const drops = new Array(columns).fill(1);
+  function initMatrix() {
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
 
-  function draw() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, width, height);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    ctx.fillStyle = '#0F0';
-    ctx.font = fontSize + 'px monospace';
+    const letters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
 
-    for (let i = 0; i < drops.length; i++) {
-      const text = letters.charAt(Math.floor(Math.random() * letters.length));
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    const drops = [];
+    for(let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
 
-      if (drops[i] * fontSize > height && Math.random() > 0.975) {
-        drops[i] = 0;
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ff00';
+      ctx.font = fontSize + 'px monospace';
+
+      for(let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i] += 1;
       }
-      drops[i]++;
+
+      requestAnimationFrame(draw);
     }
+    draw();
   }
 
-  setInterval(draw, 33);
+  // SEND UNBAN REQUEST
 
-  // Send mail function using mailto:
-  function sendUnbanMail(event) {
-    event.preventDefault();
-
-    const number = document.getElementById('number').value.trim();
+  function sendUnbanRequest() {
     const banType = document.getElementById('banType').value;
-    const promote = document.getElementById('promote').value;
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const promote = document.getElementById('promoteSelect').value;
 
-    if (!number || !banType || !promote) {
-      alert('Please fill all fields');
+    if(!phoneNumber) {
+      alert('Please enter a phone number.');
       return;
     }
 
-    // Prepare email details
-    const mailto = "mailto:support@whatsapp.com";
-    const subject = encodeURIComponent("WhatsApp Unban Request");
-    const body = encodeURIComponent(
-      `Request to Unban WhatsApp Number\n\n` +
-      `Number: ${number}\n` +
-      `Ban Type: ${banType}\n` +
-      `Message: ${promote}\n\n` +
-      `Please review and unban this number.\n\nThank you.`
-    );
+    // Prepare email content (simulate, as real mail sending requires backend)
+    let subject = 'WhatsApp Unban Request';
+    let body = `Unban Request Details:\n\nPhone Number: ${phoneNumber}\nBan Type: ${banType === 'permanent' ? 'Permanently Banned' : 'Normal Ban'}\nRequest Type: ${promote}\n\nPlease review and unban the number as soon as possible.`;
 
-    // Open mail client with pre-filled email
-    window.location.href = `${mailto}?subject=${subject}&body=${body}`;
+    // Show result for user to copy or to simulate sending mail
+    const mailtoLink = `mailto:unban@whatsapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Display result with mailto link
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `Mail ready to send:\n\nSubject: ${subject}\n\nBody:\n${body}\n\n<a href="${mailtoLink}" target="_blank" style="color: #00ff00;">Click here to send Email</a>`;
   }
 </script>
 
 </body>
-  </html>
+</html>
