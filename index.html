@@ -7,12 +7,11 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-  /* Background & body */
   body {
     margin: 0; 
     padding: 20px;
-    background-color: #000; /* black background */
-    color: #00ff00; /* green text */
+    background-color: #000;
+    color: #00ff00;
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
@@ -23,25 +22,25 @@
     position: relative;
   }
 
-  /* Header */
   header {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     font-weight: bold;
-    color: #ff0000; /* red color */
     margin-bottom: 5px;
-    text-shadow:
-      0 0 5px #ff0000,
-      0 0 10px #ff0000,
-      0 0 20px #ff0000,
-      0 0 40px #00ff00,
-      0 0 80px #00ff00;
     letter-spacing: 3px;
     user-select: none;
     position: relative;
     z-index: 10;
+    /* Multi-color glowing effect */
+    color: #0f0; /* green base */
+    text-shadow:
+      0 0 5px #0f0,
+      0 0 10px #0f0,
+      0 0 20px #f00,
+      0 0 40px #f00,
+      0 0 80px #000,
+      0 0 90px #0f0;
   }
 
-  /* Subheader */
   .subheader {
     font-size: 1rem;
     color: #00ff00;
@@ -51,10 +50,9 @@
     z-index: 10;
   }
 
-  /* Terminal-like container */
   .terminal {
     position: relative;
-    z-index: 10; /* ABOVE canvas */
+    z-index: 10;
     background: #111;
     border: 2px solid #00ff00;
     border-radius: 10px;
@@ -72,7 +70,6 @@
     flex-direction: column;
   }
 
-  /* Inputs & selects */
   input, select, button {
     width: 100%;
     padding: 12px;
@@ -94,28 +91,35 @@
     color: black;
   }
 
-  /* Blinking cursor */
-  .cursor {
-    display: inline-block;
-    background-color: #00ff00;
-    width: 10px;
-    height: 20px;
-    margin-left: 3px;
-    animation: blink 1s step-start infinite;
-    vertical-align: bottom;
+  /* Custom style for promotion select to have hacking style color */
+  #promoteSelect {
+    color: #0f0; /* start green */
+    background-color: black;
+    border-color: #0f0;
+    font-weight: bold;
+    text-shadow:
+      0 0 5px #0f0,
+      0 0 10px #0f0,
+      0 0 20px #f00,
+      0 0 40px #f00;
   }
-  @keyframes blink {
-    50% { background-color: transparent; }
+  /* On focus, invert colors */
+  #promoteSelect:focus {
+    background-color: #0f0;
+    color: black;
+    border-color: #f00;
+    text-shadow:
+      none;
   }
 
-  /* MATRIX rain canvas */
+  /* MATRIX canvas */
   #matrix {
     position: fixed;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    pointer-events: none; /* SO animation does NOT block clicks */
-    z-index: 0; /* BACKGROUND */
+    pointer-events: none;
+    z-index: 0;
   }
 
 </style>
@@ -138,12 +142,12 @@
 
   <label for="promoteSelect">SELECT PROMOTION LINE</label>
   <select id="promoteSelect">
-    <option value="chance">Chance</option>
-    <option value="finalChance">Final Chance</option>
-    <option value="pleaseUnban">Please Unban Me</option>
-    <option value="mistakeBan">Mistake Ban</option>
-    <option value="urgentRequest">Urgent Request</option>
-    <option value="respectRequest">Respect Request</option>
+    <option value="standard">Standard unban request</option>
+    <option value="mistake">Mistake ban appeal</option>
+    <option value="policy">Policy compliance promise</option>
+    <option value="account">Account review request</option>
+    <option value="terms">Terms violation appeal</option>
+    <option value="final">Final chance request</option>
   </select>
 
   <button onclick="sendUnbanRequest()">SEND UNBAN REQUEST</button>
@@ -198,20 +202,18 @@
     const banType = document.getElementById('banType').value;
     const phoneNumber = document.getElementById('phoneNumber').value.trim();
     const promote = document.getElementById('promoteSelect').value;
+    const promoteText = document.getElementById('promoteSelect').selectedOptions[0].text;
 
     if(!phoneNumber) {
       alert('Please enter a phone number.');
       return;
     }
 
-    // Prepare email content (simulate, as real mail sending requires backend)
     let subject = 'WhatsApp Unban Request';
-    let body = `Unban Request Details:\n\nPhone Number: ${phoneNumber}\nBan Type: ${banType === 'permanent' ? 'Permanently Banned' : 'Normal Ban'}\nRequest Type: ${promote}\n\nPlease review and unban the number as soon as possible.`;
+    let body = `Unban Request Details:\n\nPhone Number: ${phoneNumber}\nBan Type: ${banType === 'permanent' ? 'Permanently Banned' : 'Normal Ban'}\nRequest Type: ${promoteText}\n\nPlease review and unban the number as soon as possible.`;
 
-    // Show result for user to copy or to simulate sending mail
     const mailtoLink = `mailto:unban@whatsapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    // Display result with mailto link
     const resultDiv = document.getElementById('result');
     resultDiv.innerHTML = `Mail ready to send:\n\nSubject: ${subject}\n\nBody:\n${body}\n\n<a href="${mailtoLink}" target="_blank" style="color: #00ff00;">Click here to send Email</a>`;
   }
