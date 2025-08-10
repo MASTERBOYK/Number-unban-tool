@@ -30,15 +30,14 @@
     user-select: none;
     position: relative;
     z-index: 10;
-    /* Multi-color glowing effect */
-    color: #0f0; /* green base */
+    /* Red glowing effect */
+    color: #ff0000;
     text-shadow:
-      0 0 5px #0f0,
-      0 0 10px #0f0,
-      0 0 20px #f00,
-      0 0 40px #f00,
-      0 0 80px #000,
-      0 0 90px #0f0;
+      0 0 5px #ff0000,
+      0 0 10px #ff0000,
+      0 0 20px #ff0000,
+      0 0 40px #880000,
+      0 0 80px #440000;
   }
 
   .subheader {
@@ -70,6 +69,11 @@
     flex-direction: column;
   }
 
+  label {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
   input, select, button {
     width: 100%;
     padding: 12px;
@@ -85,31 +89,42 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
+    /* red button color */
+    background-color: black;
+    color: #ff0000;
+    border-color: #ff0000;
   }
   button:hover {
-    background-color: #00ff00;
+    background-color: #ff0000;
     color: black;
   }
 
-  /* Custom style for promotion select to have hacking style color */
+  /* Promotion select box style */
   #promoteSelect {
-    color: #0f0; /* start green */
+    color: #00ff00;
     background-color: black;
-    border-color: #0f0;
+    border-color: #00ff00;
     font-weight: bold;
+    text-transform: uppercase; /* all caps */
     text-shadow:
-      0 0 5px #0f0,
-      0 0 10px #0f0,
-      0 0 20px #f00,
-      0 0 40px #f00;
+      0 0 5px #00ff00,
+      0 0 10px #00ff00;
   }
-  /* On focus, invert colors */
   #promoteSelect:focus {
-    background-color: #0f0;
+    background-color: #00ff00;
     color: black;
-    border-color: #f00;
-    text-shadow:
-      none;
+    border-color: #00cc00;
+    text-shadow: none;
+  }
+
+  /* Email confirmation link style */
+  #result a {
+    color: #ff0000; /* red */
+    font-weight: bold;
+    text-decoration: none;
+  }
+  #result a:hover {
+    text-decoration: underline;
   }
 
   /* MATRIX canvas */
@@ -142,12 +157,12 @@
 
   <label for="promoteSelect">SELECT PROMOTION LINE</label>
   <select id="promoteSelect">
-    <option value="standard">Standard unban request</option>
-    <option value="mistake">Mistake ban appeal</option>
-    <option value="policy">Policy compliance promise</option>
-    <option value="account">Account review request</option>
-    <option value="terms">Terms violation appeal</option>
-    <option value="final">Final chance request</option>
+    <option value="standard">STANDARD UNBAN REQUEST</option>
+    <option value="mistake">MISTAKE BAN APPEAL</option>
+    <option value="policy">POLICY COMPLIANCE PROMISE</option>
+    <option value="account">ACCOUNT REVIEW REQUEST</option>
+    <option value="terms">TERMS VIOLATION APPEAL</option>
+    <option value="final">FINAL CHANCE REQUEST</option>
   </select>
 
   <button onclick="sendUnbanRequest()">SEND UNBAN REQUEST</button>
@@ -158,8 +173,6 @@
 <canvas id="matrix"></canvas>
 
 <script>
-  // MATRIX RAIN EFFECT
-
   function initMatrix() {
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -196,8 +209,6 @@
     draw();
   }
 
-  // SEND UNBAN REQUEST
-
   function sendUnbanRequest() {
     const banType = document.getElementById('banType').value;
     const phoneNumber = document.getElementById('phoneNumber').value.trim();
@@ -215,9 +226,9 @@
     const mailtoLink = `mailto:unban@whatsapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = `Mail ready to send:\n\nSubject: ${subject}\n\nBody:\n${body}\n\n<a href="${mailtoLink}" target="_blank" style="color: #00ff00;">Click here to send Email</a>`;
+    resultDiv.innerHTML = `Mail ready to send:\n\nSubject: ${subject}\n\nBody:\n${body}\n\n<a href="${mailtoLink}" target="_blank">Click here to send Email</a>`;
   }
 </script>
 
 </body>
-  </html>
+</html>
