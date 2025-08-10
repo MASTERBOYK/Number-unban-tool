@@ -11,7 +11,7 @@
     margin: 0; 
     padding: 20px;
     background-color: #000;
-    color: #00ff00;
+    color: #ff0000; /* red text */
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,6 @@
     user-select: none;
     position: relative;
     z-index: 10;
-    /* Red glowing effect */
     color: #ff0000;
     text-shadow:
       0 0 5px #ff0000,
@@ -42,9 +41,9 @@
 
   .subheader {
     font-size: 1rem;
-    color: #00ff00;
+    color: #ff0000;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px #00ff00;
+    text-shadow: 0 0 10px #ff0000;
     position: relative;
     z-index: 10;
   }
@@ -52,17 +51,17 @@
   .terminal {
     position: relative;
     z-index: 10;
-    background: #111;
-    border: 2px solid #00ff00;
+    background: #110000;
+    border: 2px solid #ff0000;
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
-    min-height: 400px;
+    min-height: 450px;
     padding: 15px 20px;
     box-shadow:
-      0 0 15px #00ff00,
-      inset 0 0 10px #00ff00;
-    color: #00ff00;
+      0 0 15px #ff0000,
+      inset 0 0 10px #ff0000;
+    color: #ff0000;
     overflow-y: auto;
     white-space: pre-wrap;
     display: flex;
@@ -79,9 +78,9 @@
     padding: 12px;
     margin: 10px 0;
     border-radius: 10px;
-    border: 2px solid #00ff00;
+    border: 2px solid #ff0000;
     background-color: black;
-    color: #00ff00;
+    color: #ff0000;
     font-family: 'Share Tech Mono', monospace;
     font-size: 15px;
   }
@@ -89,7 +88,6 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
-    /* red button color */
     background-color: black;
     color: #ff0000;
     border-color: #ff0000;
@@ -101,25 +99,25 @@
 
   /* Promotion select box style */
   #promoteSelect {
-    color: #00ff00;
+    color: #ff0000;
     background-color: black;
-    border-color: #00ff00;
+    border-color: #ff0000;
     font-weight: bold;
-    text-transform: uppercase; /* all caps */
+    text-transform: uppercase;
     text-shadow:
-      0 0 5px #00ff00,
-      0 0 10px #00ff00;
+      0 0 5px #ff0000,
+      0 0 10px #ff0000;
   }
   #promoteSelect:focus {
-    background-color: #00ff00;
+    background-color: #ff0000;
     color: black;
-    border-color: #00cc00;
+    border-color: #cc0000;
     text-shadow: none;
   }
 
   /* Email confirmation link style */
   #result a {
-    color: #ff0000; /* red */
+    color: #ff0000;
     font-weight: bold;
     text-decoration: none;
   }
@@ -137,12 +135,32 @@
     z-index: 0;
   }
 
+  /* Channel banner link styling */
+  #channelLink {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ff0000;
+    text-decoration: none;
+    border: 2px solid #ff0000;
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+    box-shadow:
+      0 0 10px #ff0000;
+    transition: background-color 0.3s;
+  }
+  #channelLink:hover {
+    background-color: #ff0000;
+    color: black;
+  }
+
 </style>
 </head>
 <body onload="initMatrix()">
 
 <header>MASTER HACKER TOOL</header>
-<div class="subheader">WhatsApp Unban Full Working Trick ♥️🖤💚 100% Unban Guarantee</div>
+<div class="subheader">WHATSAPP UNBAN FULL WORKING TRICK ♥️🖤 100% UNBAN GUARANTEE</div>
 
 <div class="terminal" id="terminal">
 
@@ -168,6 +186,12 @@
   <button onclick="sendUnbanRequest()">SEND UNBAN REQUEST</button>
 
   <div id="result" style="margin-top:20px; white-space: pre-wrap;"></div>
+
+  <!-- WhatsApp Channel Link Banner -->
+  <a href="https://whatsapp.com/channel/0029VbAigTSJkK7HbvMv6s3F" target="_blank" id="channelLink">
+    JOIN OUR OFFICIAL WHATSAPP CHANNEL - UNBAN MASTER
+  </a>
+
 </div>
 
 <canvas id="matrix"></canvas>
@@ -191,7 +215,7 @@
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#00ff00';
+      ctx.fillStyle = '#ff0000';
       ctx.font = fontSize + 'px monospace';
 
       for(let i = 0; i < drops.length; i++) {
@@ -212,21 +236,20 @@
   function sendUnbanRequest() {
     const banType = document.getElementById('banType').value;
     const phoneNumber = document.getElementById('phoneNumber').value.trim();
-    const promote = document.getElementById('promoteSelect').value;
-    const promoteText = document.getElementById('promoteSelect').selectedOptions[0].text;
+    const promoteText = document.getElementById('promoteSelect').selectedOptions[0].text.toUpperCase();
 
     if(!phoneNumber) {
       alert('Please enter a phone number.');
       return;
     }
 
-    let subject = 'WhatsApp Unban Request';
-    let body = `Unban Request Details:\n\nPhone Number: ${phoneNumber}\nBan Type: ${banType === 'permanent' ? 'Permanently Banned' : 'Normal Ban'}\nRequest Type: ${promoteText}\n\nPlease review and unban the number as soon as possible.`;
+    let subject = 'WHATSAPP UNBAN REQUEST';
+    let body = `UNBAN REQUEST DETAILS:\n\nPHONE NUMBER: ${phoneNumber}\nBAN TYPE: ${banType === 'permanent' ? 'PERMANENTLY BANNED' : 'NORMAL BAN'}\nREQUEST TYPE: ${promoteText}\n\nPLEASE REVIEW AND UNBAN THE NUMBER AS SOON AS POSSIBLE.`;
 
     const mailtoLink = `mailto:unban@whatsapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = `Mail ready to send:\n\nSubject: ${subject}\n\nBody:\n${body}\n\n<a href="${mailtoLink}" target="_blank">Click here to send Email</a>`;
+    resultDiv.innerHTML = `MAIL READY TO SEND:\n\nSUBJECT: ${subject}\n\nBODY:\n${body}\n\n<a href="${mailtoLink}" target="_blank">CLICK HERE TO SEND EMAIL</a>`;
   }
 </script>
 
